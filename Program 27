@@ -1,0 +1,31 @@
+class Solution:
+    def longestSubarray(self, arr, k):
+        # dictionary to store (prefix_sum: first_index_it_appeared)
+        pre_sum_map = {}
+        current_sum = 0
+        max_length = 0
+        
+        for i in range(len(arr)):
+            current_sum += arr[i]
+            
+            # Case 1: If the sum itself is k, the subarray starts from index 0
+            if current_sum == k:
+                max_length = i + 1
+            
+            # Case 2: Check if (current_sum - k) exists in the map
+            # This means a subarray with sum k exists somewhere in the middle
+            rem = current_sum - k
+            if rem in pre_sum_map:
+                length = i - pre_sum_map[rem]
+                max_length = max(max_length, length)
+            
+            # Case 3: Only store the sum in the map if it's NOT already there
+            # We want the FIRST occurrence to keep the subarray as long as possible
+            if current_sum not in pre_sum_map:
+                pre_sum_map[current_sum] = i
+                
+        return max_length
+
+    
+# Program-27
+Program 27
